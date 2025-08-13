@@ -9,6 +9,8 @@ class Runner:
         lexer = Lexer(prog)
         try:
             lexer.lex()
+            for token in lexer.tokens:
+                print(token.value)
         except Exception as e:
             print(e)
 
@@ -20,10 +22,12 @@ also
 be
 multiline!]
 
-define how_to_define_variable "this is how you define a variable!" [this is how you define a variable]
-define a 10
-define b 100
-define c [No initialized value]
+DEFINE howToDefineVariable "this is how you define a variable!" [this is how you define a variable]
+DEFINE a 10
+DEFINE b 100
+DEFINE c [No initialized value]
 + a b c [Add a, b, to c]
-print c [prints c]
+PRINT "c is" [prints a string]
+PRINTN c "\n" [prints a number c, ending with \n]
+
 """
