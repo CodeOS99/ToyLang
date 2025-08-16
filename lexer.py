@@ -91,8 +91,10 @@ class Lexer:
                         self.tokens.append(Token(TokenType.T_DEFINE, "define"))
                     case "PRINT":
                         self.tokens.append(Token(TokenType.T_PRINT, "print"))
-                    case "PRINTN":
-                        self.tokens.append(Token(TokenType.T_PRINTI, "printi"))
+                    case "INIT":
+                        self.tokens.append(Token(TokenType.T_INIT, "init"))
+                    case "PRINTL":
+                        self.tokens.append(Token(TokenType.T_PRINTL, "printl"))
                     case _:
                         self.tokens.append(Token(TokenType.T_VARIABLE, word))
 

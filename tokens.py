@@ -17,8 +17,9 @@ class TokenType(Enum):
 
     T_VARIABLE = 1
     T_DEFINE = 0
+    T_INIT = 17
     T_PRINT = 10
-    T_PRINTN = 11
+    T_PRINTL = 18
 
 class Token:
     def __init__(self, type: TokenType, value):
