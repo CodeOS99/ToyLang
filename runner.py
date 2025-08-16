@@ -1,21 +1,33 @@
 from interpreter import Interpreter
 from lexer import Lexer
+from tokens import TokenType, Token
 
 
 class Runner:
-    def __init__(self):
-        self.interpreter = Interpreter([""])
+    def __init__(self, repl=False):
+        self.repl = repl
+        self.interpreter = Interpreter([], repl=repl)
 
-    def run(self, prog:str):
-        self.interpreter.tokens = self.lex(prog)
+    def run(self, prog: str, is_file=False):
+        tokens = self.lex(prog)
+        if not tokens:
+            return
+        if self.repl:
+            self.interpreter.tokenHis.append(tokens)
+            self.interpreter.run_num = len(self.interpreter.tokenHis) - 1
+            self.interpreter.curr_idx = 0
+            self.interpreter.tokens = tokens
+        else:
+            self.interpreter.tokenHis = [tokens]
+            self.interpreter.run_num = 0
+            self.interpreter.curr_idx = 0
+            self.interpreter.tokens = tokens
         self.interpret()
 
     def lex(self, prog: str):
         lexer = Lexer(prog)
         try:
             lexer.lex()
-            # for token in lexer.tokens:
-            #     print(token.value)
             return lexer.tokens
         except Exception as e:
             print(e)
@@ -26,21 +38,3 @@ class Runner:
             self.interpreter.interpret()
         except Exception as e:
             print(e)
-
-"""
-[This is a sample program in this language] [This is a comment!]
-[It
-can
-also
-be
-multiline!]
-
-DEFINE howToDefineVariable "this is how you define a variable!" [this is how you define a variable]
-DEFINE a 10
-DEFINE b 100
-INIT c [No value, only initialized]
-+ a b c [Add a, b, to c]
-PRINT "c is" " " [prints a string, ending with ' ']
-PRINT c "\n" [prints a number c, ending with \n]
-
-"""

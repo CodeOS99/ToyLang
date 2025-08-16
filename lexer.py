@@ -3,6 +3,7 @@ from tokens import Token, TokenType
 
 class Lexer:
     def __init__(self, text):
+        self.is_line_num = False
         self.text = text
         self.curr_idx = 0
         self.tokens = []
@@ -38,6 +39,10 @@ class Lexer:
                     else:
                         break
                 self.curr_idx += 1
+                if self.is_line_num:
+                    self.tokens.append(Token(TokenType.T_LINE_NUM, self.text[initIdx:self.curr_idx]))
+                    self.is_line_num = False
+                    continue
                 self.tokens.append(Token(TokenType.T_NUM, self.text[initIdx:self.curr_idx]))
 
             elif self.text[self.curr_idx] == "+":
@@ -54,6 +59,18 @@ class Lexer:
                 self.curr_idx += 1
             elif self.text[self.curr_idx] == "%":
                 self.tokens.append(Token(TokenType.T_MODULO, "%"))
+                self.curr_idx += 1
+            elif self.text[self.curr_idx] == ">":
+                self.tokens.append(Token(TokenType.T_G, ">"))
+                self.curr_idx += 1
+            elif self.text[self.curr_idx] == ">=":
+                self.tokens.append(Token(TokenType.T_GE, ">="))
+                self.curr_idx += 1
+            elif self.text[self.curr_idx] == "<":
+                self.tokens.append(Token(TokenType.T_L, "<"))
+                self.curr_idx += 1
+            elif self.text[self.curr_idx] == "L":
+                self.is_line_num = True
                 self.curr_idx += 1
             elif self.text[self.curr_idx] == "[":
                 self.curr_idx += 1
@@ -72,7 +89,7 @@ class Lexer:
                 initIdx = self.curr_idx
                 while True:
                     n = self.next()
-                    if n.isalpha():
+                    if n.isalpha() or n in "<=>":
                         self.curr_idx += 1
                     else:
                         break
@@ -95,7 +112,29 @@ class Lexer:
                         self.tokens.append(Token(TokenType.T_INIT, "init"))
                     case "PRINTL":
                         self.tokens.append(Token(TokenType.T_PRINTL, "printl"))
+                    case "JG":
+                        self.tokens.append(Token(TokenType.T_JG, ">"))
+                    case "JGE":
+                        self.tokens.append(Token(TokenType.T_JGE, ">="))
+                    case "JL":
+                        self.tokens.append(Token(TokenType.T_JL, "<"))
+                    case "JLE":
+                        self.tokens.append(Token(TokenType.T_JG, "<="))
+                    case "JE":
+                        self.tokens.append(Token(TokenType.T_JE, "=="))
+                    case "JNE":
+                        self.tokens.append(Token(TokenType.T_JNE, "!="))
+                    case "<=":
+                        self.tokens.append(Token(TokenType.T_LE, "<="))
+                    case "<=":
+                            self.tokens.append(Token(TokenType.T_LE, "<="))
+                    case "==":
+                            self.tokens.append(Token(TokenType.T_E, "=="))
+                    case "J":
+                        self.tokens.append(Token(TokenType.T_J, "j"))
                     case _:
+                        if self.is_line_num:
+                            raise Exception("Expected number after line number!")
                         self.tokens.append(Token(TokenType.T_VARIABLE, word))
 
     def curr(self):
