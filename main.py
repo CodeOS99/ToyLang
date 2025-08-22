@@ -4,7 +4,7 @@ print("Welcome to REPL of simplelang\n")
 print("exit to exit")
 print("run *filename.sl* to run a file")
 print("or write code to be executed here directly!")
-print("try it with run demo.sl!")
+print("try it with run demo.tl!")
 
 runner = Runner(repl=True)
 

@@ -1,5 +1,13 @@
 [Sample program demonstrating even/odd check in simplelang]
-
+[
+I
+can
+be
+multi
+line
+btw
+!
+]
 L 10 DEFINE howToDefineVariable "this is how you define a variable!"
 L 20 DEFINE a 10
 L 30 DEFINE b 100
